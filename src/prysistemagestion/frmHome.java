@@ -17,6 +17,9 @@ public class frmHome extends javax.swing.JFrame {
      */
     public frmHome() {
         initComponents();
+        
+        conexionBD prueba = new conexionBD();
+        prueba.conectar();
     }
 
     /**
