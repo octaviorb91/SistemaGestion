@@ -18,8 +18,14 @@ public class frmHome extends javax.swing.JFrame {
     public frmHome() {
         initComponents();
         
-        conexionBD prueba = new conexionBD();
-        prueba.conectar();
+        // Centra la ventana
+        this.setLocationRelativeTo(null); 
+
+        // Hace que la ventana principal inicie maximizada
+        this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH); 
+        
+        this.setTitle("Sistema de gestión - Principal");
+        
     }
 
     /**
@@ -31,21 +37,110 @@ public class frmHome extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        lblFondo = new javax.swing.JLabel();
+        jMenuBar1 = new javax.swing.JMenuBar();
+        jMenu2 = new javax.swing.JMenu();
+        jMenuItem5 = new javax.swing.JMenuItem();
+        jMenu1 = new javax.swing.JMenu();
+        jMenuItem1 = new javax.swing.JMenuItem();
+        jMenuItem2 = new javax.swing.JMenuItem();
+        jMenu3 = new javax.swing.JMenu();
+        jMenuItem3 = new javax.swing.JMenuItem();
+        jMenu4 = new javax.swing.JMenu();
+        jMenuItem4 = new javax.swing.JMenuItem();
+
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/redes neuronales.png"))); // NOI18N
+
+        jMenu2.setText("Sistema");
+
+        jMenuItem5.setText("Salir");
+        jMenuItem5.addActionListener(this::jMenuItem5ActionPerformed);
+        jMenu2.add(jMenuItem5);
+
+        jMenuBar1.add(jMenu2);
+
+        jMenu1.setText("Gestión");
+
+        jMenuItem1.setText("Artículos");
+        jMenuItem1.addActionListener(this::jMenuItem1ActionPerformed);
+        jMenu1.add(jMenuItem1);
+
+        jMenuItem2.setText("Clientes");
+        jMenuItem2.addActionListener(this::jMenuItem2ActionPerformed);
+        jMenu1.add(jMenuItem2);
+
+        jMenuBar1.add(jMenu1);
+
+        jMenu3.setText("Operaciones");
+
+        jMenuItem3.setText("Nueva venta");
+        jMenuItem3.addActionListener(this::jMenuItem3ActionPerformed);
+        jMenu3.add(jMenuItem3);
+
+        jMenuBar1.add(jMenu3);
+
+        jMenu4.setText("Reportes");
+
+        jMenuItem4.setText("Reportes de Venta");
+        jMenuItem4.addActionListener(this::jMenuItem4ActionPerformed);
+        jMenu4.add(jMenuItem4);
+
+        jMenuBar1.add(jMenu4);
+
+        setJMenuBar(jMenuBar1);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addComponent(lblFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addComponent(lblFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
+        // 1. Creamos una instancia de la ventana de artículos
+        frmArticulos ventanaArticulos = new frmArticulos();
+
+        // 2. La hacemos visible
+        ventanaArticulos.setVisible(true);
+    }//GEN-LAST:event_jMenuItem1ActionPerformed
+
+    private void jMenuItem2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem2ActionPerformed
+        frmClientes ventanaClientes = new frmClientes();
+        ventanaClientes.setVisible(true);
+    }//GEN-LAST:event_jMenuItem2ActionPerformed
+
+    private void jMenuItem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem3ActionPerformed
+        frmVentas ventanaVentas = new frmVentas();
+        ventanaVentas.setVisible(true);
+    }//GEN-LAST:event_jMenuItem3ActionPerformed
+
+    private void jMenuItem4ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem4ActionPerformed
+        frmReportes ventanaReportes = new frmReportes();
+        ventanaReportes.setVisible(true);
+    }//GEN-LAST:event_jMenuItem4ActionPerformed
+
+    private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
+        // Pedimos confirmación antes de cerrar todo el sistema
+        int respuesta = javax.swing.JOptionPane.showConfirmDialog(this, 
+                "¿Está seguro que desea salir del sistema?", 
+                "Confirmar Salida", 
+                javax.swing.JOptionPane.YES_NO_OPTION, 
+                javax.swing.JOptionPane.QUESTION_MESSAGE);
+
+        if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
+            // Cierra la aplicación por completo y libera la memoria
+            System.exit(0);
+        }
+    }//GEN-LAST:event_jMenuItem5ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -73,5 +168,16 @@ public class frmHome extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu jMenu1;
+    private javax.swing.JMenu jMenu2;
+    private javax.swing.JMenu jMenu3;
+    private javax.swing.JMenu jMenu4;
+    private javax.swing.JMenuBar jMenuBar1;
+    private javax.swing.JMenuItem jMenuItem1;
+    private javax.swing.JMenuItem jMenuItem2;
+    private javax.swing.JMenuItem jMenuItem3;
+    private javax.swing.JMenuItem jMenuItem4;
+    private javax.swing.JMenuItem jMenuItem5;
+    private javax.swing.JLabel lblFondo;
     // End of variables declaration//GEN-END:variables
 }

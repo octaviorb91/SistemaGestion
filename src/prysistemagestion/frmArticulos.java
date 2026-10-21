@@ -20,6 +20,7 @@ public class frmArticulos extends javax.swing.JFrame {
         this.setLocationRelativeTo(null);
         cargarTabla();
         habilitarCampos(false);
+        this.setTitle("Sistema de gestión - Artículos");
     }
 
     /**
@@ -52,7 +53,7 @@ public class frmArticulos extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblArticulos = new javax.swing.JTable();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setPreferredSize(new java.awt.Dimension(800, 600));
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder("Datos del artículo"));
