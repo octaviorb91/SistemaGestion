@@ -17,10 +17,16 @@ public class frmArticulos extends javax.swing.JFrame {
      */
     public frmArticulos() {
         initComponents();
+        //Para que inicie centrado
         this.setLocationRelativeTo(null);
+        //Llamamos al metodo para cargar la tabla con el stock
         cargarTabla();
+        //Deshabilitamos los campos para que no se puedan modificar sin apretar el boton modificar
         habilitarCampos(false);
+        //Ponemos el titulo
         this.setTitle("Sistema de gestión - Artículos");
+        //Cargamos el icono
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagenes/articleIcon.png")).getImage());
     }
 
     /**
@@ -240,31 +246,33 @@ public class frmArticulos extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
+        //Capturamos los datos en los text field
         String nombre = txtNombre.getText().trim();
         String categoria = cboCategoria.getSelectedItem().toString();
         String precioTexto = txtPrecio.getText().trim();
         String stockTexto = txtStock.getText().trim();
         boolean activo = chkActivo.isSelected();
 
+        //Corroboramos que no esten vacios
         if (nombre.isEmpty() || precioTexto.isEmpty() || stockTexto.isEmpty() || categoria.equals("Seleccionar")) {
             javax.swing.JOptionPane.showMessageDialog(this, "Complete todos los campos obligatorios.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
+        //Abrimos la conexion
         conexionBD conexion = new conexionBD();
         java.sql.Connection con = null;
         java.sql.PreparedStatement ps = null;
 
+        //Si el id esta vacio, crea un articulo nuevo, si no, actualiza el id seleccionado
         try {
             double precio = Double.parseDouble(precioTexto);
             int stock = Integer.parseInt(stockTexto);
             con = conexion.conectar();
 
-            // --- LA MAGIA ESTÁ AQUÍ ---
             String idTexto = txtCodigo.getText().trim();
 
             if (idTexto.isEmpty()) {
-                // ALTA: No hay código, insertamos uno nuevo
                 String sql = "INSERT INTO articulos (nombre, categoria, precio, stock, activo) VALUES (?, ?, ?, ?, ?)";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, nombre);
@@ -273,7 +281,6 @@ public class frmArticulos extends javax.swing.JFrame {
                 ps.setInt(4, stock);
                 ps.setBoolean(5, activo);
             } else {
-                // MODIFICACIÓN: Hay código, actualizamos el existente
                 String sql = "UPDATE articulos SET nombre=?, categoria=?, precio=?, stock=?, activo=? WHERE idArticulo=?";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, nombre);
@@ -290,7 +297,7 @@ public class frmArticulos extends javax.swing.JFrame {
                 javax.swing.JOptionPane.showMessageDialog(this, "Operación guardada con éxito.");
                 cargarTabla();
                 limpiarCampos();
-                habilitarCampos(false); // Volvemos a bloquear el formulario
+                habilitarCampos(false); //Volvemos a bloquear el formulario
             }
 
         } catch (NumberFormatException e) {
@@ -306,31 +313,23 @@ public class frmArticulos extends javax.swing.JFrame {
     }//GEN-LAST:event_btnGuardarActionPerformed
 
     private void tblArticulosMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblArticulosMouseClicked
-        // 1. Averiguamos qué fila seleccionó el usuario (la primera fila es la 0)
+        //Tomamos la fila que selecciono el usuario
         int filaSeleccionada = tblArticulos.getSelectedRow();
 
-        // 2. Verificamos que realmente haya hecho clic en una fila válida
+        //Verificamos que haya hecho clic en una fila
         if (filaSeleccionada >= 0) {
 
-            // 3. Extraemos el valor de cada columna de esa fila y lo subimos al formulario
-
-            // Columna 0: ID (Lo guardamos en txtCodigo, recuerda que está deshabilitado para edición)
+            //Tomamos el valor de cada columna de esa fila y lo subimos al formulario
             txtCodigo.setText(tblArticulos.getValueAt(filaSeleccionada, 0).toString());
 
-            // Columna 1: Nombre
             txtNombre.setText(tblArticulos.getValueAt(filaSeleccionada, 1).toString());
 
-            // Columna 2: Categoría (JComboBox usa setSelectedItem en lugar de setText)
             cboCategoria.setSelectedItem(tblArticulos.getValueAt(filaSeleccionada, 2).toString());
 
-            // Columna 3: Precio
             txtPrecio.setText(tblArticulos.getValueAt(filaSeleccionada, 3).toString());
 
-            // Columna 4: Stock
             txtStock.setText(tblArticulos.getValueAt(filaSeleccionada, 4).toString());
 
-            // Columna 5: Activo (JCheckBox)
-            // Capturamos directamente el valor booleano de la tabla
             boolean estado = (boolean) tblArticulos.getValueAt(filaSeleccionada, 5);
             chkActivo.setSelected(estado);
         }
@@ -342,9 +341,9 @@ public class frmArticulos extends javax.swing.JFrame {
         javax.swing.JOptionPane.showMessageDialog(this, "Seleccione un artículo de la tabla primero.");
         return;
         }
-        // Solo habilitamos los campos para permitir la edición
+        //Habilitamos los campos
         habilitarCampos(true);
-        txtNombre.requestFocus(); // Pone el cursor titilando en el nombre
+        txtNombre.requestFocus(); //Pone el cursor en el nombre
     }//GEN-LAST:event_btnModificarActionPerformed
 
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
@@ -361,20 +360,20 @@ public class frmArticulos extends javax.swing.JFrame {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         String idTexto = txtCodigo.getText().trim();
     
-        // 1. Validamos que haya seleccionado algo
+        //Validamos que se haya seleccionado algo
         if (idTexto.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, seleccione un artículo de la tabla para eliminar.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 2. Pedimos confirmación al usuario
+        //Pedimos confirmacion al usuario
         int respuesta = javax.swing.JOptionPane.showConfirmDialog(this, 
                 "¿Está seguro que desea eliminar permanentemente este artículo?", 
                 "Confirmar Eliminación", 
                 javax.swing.JOptionPane.YES_NO_OPTION, 
                 javax.swing.JOptionPane.QUESTION_MESSAGE);
 
-        // 3. Si responde que SÍ (YES_OPTION), procedemos a borrar
+        //Si responde que si, borramos
         if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
             conexionBD conexion = new conexionBD();
             java.sql.Connection con = null;
@@ -383,7 +382,7 @@ public class frmArticulos extends javax.swing.JFrame {
             try {
                 con = conexion.conectar();
 
-                // La consulta DELETE: Borramos DONDE el idArticulo coincida
+                //Borramos donde el idArticulo coincida
                 String sql = "DELETE FROM articulos WHERE idArticulo=?";
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, Integer.parseInt(idTexto));
@@ -392,9 +391,9 @@ public class frmArticulos extends javax.swing.JFrame {
 
                 if (resultado > 0) {
                     javax.swing.JOptionPane.showMessageDialog(this, "Artículo eliminado con éxito.", "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
-                    cargarTabla(); // Refrescamos la tabla
-                    limpiarCampos(); // Limpiamos la pantalla
-                    habilitarCampos(false); // Bloqueamos de nuevo
+                    cargarTabla(); //Refrescamos la tabla
+                    limpiarCampos(); //Limpiamos la pantalla
+                    habilitarCampos(false); //Bloqueamos de nuevo
                 }
 
             } catch (java.sql.SQLException e) {
@@ -420,25 +419,25 @@ public class frmArticulos extends javax.swing.JFrame {
     }
 
     private void habilitarCampos(boolean estado) {
-        // Habilita o deshabilita la escritura en los campos
+        //Habilita o deshabilita los campos
         txtNombre.setEnabled(estado);
         txtPrecio.setEnabled(estado);
         txtStock.setEnabled(estado);
         cboCategoria.setEnabled(estado);
         chkActivo.setEnabled(estado);
 
-        // El botón guardar solo se habilita si los campos están habilitados
+        // El boton guardar se habilita si los campos estan habilitados
         btnGuardar.setEnabled(estado);
     }
     
     private void cargarTabla() {
-        // 1. Obtenemos el modelo de la tabla para poder manipular sus filas
+        //Obtenemos el modelo de la tabla
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblArticulos.getModel();
 
-        // 2. Limpiamos la tabla borrando todas las filas existentes (para no duplicar datos al refrescar)
+        //Limpiamos la tabla
         modelo.setRowCount(0);
 
-        // 3. Preparamos la conexión
+        //Preparamos la conexion
         conexionBD conexion = new conexionBD();
         java.sql.Connection con = null;
         java.sql.Statement st = null;
@@ -446,16 +445,16 @@ public class frmArticulos extends javax.swing.JFrame {
 
         try {
             con = conexion.conectar();
-            // 4. Armamos la consulta SQL para traer todos los registros
+            //Armamos la consulta SQL para traer los registros
             String sql = "SELECT idArticulo, nombre, categoria, precio, stock, activo FROM articulos";
 
             st = con.createStatement();
-            // ResultSet es el objeto que guarda los resultados de la base de datos
+            //ResultSet es el objeto que guarda los resultados de la base de datos
             rs = st.executeQuery(sql);
 
-            // 5. Recorremos los resultados fila por fila con un bucle while
+            //Recorremos los resultados fila por fila con un bucle while
             while (rs.next()) {
-                // Creamos un vector (array) genérico para guardar las 6 columnas
+                //Creamos un vector para guardar las 6 columnas
                 Object[] fila = new Object[6];
 
                 fila[0] = rs.getInt("idArticulo");
@@ -465,14 +464,14 @@ public class frmArticulos extends javax.swing.JFrame {
                 fila[4] = rs.getInt("stock");
                 fila[5] = rs.getBoolean("activo");
 
-                // Agregamos la fila armada a nuestro modelo de tabla
+                //Agregamos la fila armada a nuestro modelo de tabla
                 modelo.addRow(fila);
             }
 
         } catch (java.sql.SQLException e) {
             javax.swing.JOptionPane.showMessageDialog(this, "Error al cargar los datos:\n" + e.getMessage(), "Error BD", javax.swing.JOptionPane.ERROR_MESSAGE);
         } finally {
-            // (Requisito 6) Cerramos los recursos para liberar memoria
+            //Cerramos los recursos para liberar memoria
             try {
                 if (rs != null) rs.close();
                 if (st != null) st.close();

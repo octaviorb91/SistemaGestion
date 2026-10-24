@@ -17,9 +17,14 @@ public class frmReportes extends javax.swing.JFrame {
      */
     public frmReportes() {
         initComponents();
+        //Para que inicie centrado
         this.setLocationRelativeTo(null);
+        //Para que no cierre todo el sistema al cerrarse
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        //Titulo
         this.setTitle("Sistema de gestión - Reportes");
+        //Cargamos el icono
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagenes/reportIcon.png")).getImage());
     }
 
     /**
@@ -143,7 +148,7 @@ public class frmReportes extends javax.swing.JFrame {
         String fechaDesde = txtFechaDesde.getText().trim();
         String fechaHasta = txtFechaHasta.getText().trim();
 
-        // Validamos que las fechas no estén vacías
+        //Validamos que las fechas no esten vacias
         if (fechaDesde.isEmpty() || fechaHasta.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Por favor, complete los campos 'Desde' y 'Hasta' con formato YYYY-MM-DD.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
@@ -160,9 +165,9 @@ public class frmReportes extends javax.swing.JFrame {
 
             String sql = "";
 
-            // Evaluamos qué tipo de reporte gráfico quiere el usuario
+            //Evaluamos que tipo de reporte quiere el usuario
             if (tipoFiltro.equals("Ventas por articulo")) {
-                // Suma la cantidad vendida por cada artículo en el rango de fechas
+                //Suma la cantidad vendida por cada articulo en el rango de fechas
                 sql = "SELECT a.nombre AS categoria_nombre, SUM(dt.cantidad) AS total_metrica " +
                       "FROM detalle_ventas dt " +
                       "JOIN ventas v ON dt.idVenta = v.idVenta " +
@@ -170,7 +175,7 @@ public class frmReportes extends javax.swing.JFrame {
                       "WHERE DATE(v.fecha) BETWEEN ? AND ? " +
                       "GROUP BY a.nombre";
             } else {
-                // Suma el total de dinero gastado por cada cliente en el rango de fechas
+                //Suma el total de dinero gastado por cada cliente en el rango de fechas
                 sql = "SELECT CONCAT(c.nombre, ' ', c.apellido) AS categoria_nombre, SUM(v.total) AS total_metrica " +
                       "FROM ventas v " +
                       "JOIN clientes c ON v.idCliente = c.idCliente " +
@@ -189,7 +194,7 @@ public class frmReportes extends javax.swing.JFrame {
                 String categoria = rs.getString("categoria_nombre");
                 double valor = rs.getDouble("total_metrica");
 
-                // Agregamos los datos al dataset del gráfico (Valor, Serie, Eje X)
+                //Agregamos los datos al dataset del grafico
                 dataset.addValue(valor, tipoFiltro, categoria);
             }
 
@@ -198,7 +203,7 @@ public class frmReportes extends javax.swing.JFrame {
                 return;
             }
 
-            // Creamos el Gráfico de Barras con JFreeChart
+            //Creamos el grafico con JFreeChart
             org.jfree.chart.JFreeChart grafico = org.jfree.chart.ChartFactory.createBarChart(
                 "Reporte Estadístico: " + tipoFiltro,
                 tipoFiltro.equals("Ventas por Artículo") ? "Artículos" : "Clientes",
@@ -208,11 +213,11 @@ public class frmReportes extends javax.swing.JFrame {
                 true, true, false
             );
 
-            // Panel visual para mostrar el gráfico dentro del JFrame
+            //Panel visual para mostrar el grafico dentro del JFrame
             org.jfree.chart.ChartPanel panelChart = new org.jfree.chart.ChartPanel(grafico);
             panelChart.setMouseWheelEnabled(true);
 
-            // Limpiamos el panel contenedor anterior y dibujamos el nuevo gráfico
+            //Limpiamos el panel contenedor anterior y dibujamos el nuevo grafico
             panelGrafico.removeAll();
             panelGrafico.setLayout(new java.awt.BorderLayout());
             panelGrafico.add(panelChart, java.awt.BorderLayout.CENTER);

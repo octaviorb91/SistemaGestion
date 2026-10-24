@@ -17,14 +17,12 @@ public class frmHome extends javax.swing.JFrame {
      */
     public frmHome() {
         initComponents();
-        
-        // Centra la ventana
+        //Para que inicie centrado, maximizado y le agregamos titulo
         this.setLocationRelativeTo(null); 
-
-        // Hace que la ventana principal inicie maximizada
         this.setExtendedState(javax.swing.JFrame.MAXIMIZED_BOTH); 
-        
         this.setTitle("Sistema de gestión - Principal");
+        //Cargamos el icono
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagenes/homeicon.png")).getImage());
         
     }
 
@@ -51,7 +49,7 @@ public class frmHome extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/redes neuronales.png"))); // NOI18N
+        lblFondo.setIcon(new javax.swing.ImageIcon(getClass().getResource("/imagenes/fondo18.jpg"))); // NOI18N
 
         jMenu2.setText("Sistema");
 
@@ -99,17 +97,19 @@ public class frmHome extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(lblFondo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addComponent(lblFondo)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jMenuItem1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem1ActionPerformed
-        // 1. Creamos una instancia de la ventana de artículos
+        //Creamos una instancia de la ventana de articulos
         frmArticulos ventanaArticulos = new frmArticulos();
 
-        // 2. La hacemos visible
+        //La hacemos visible
         ventanaArticulos.setVisible(true);
     }//GEN-LAST:event_jMenuItem1ActionPerformed
 
@@ -129,7 +129,7 @@ public class frmHome extends javax.swing.JFrame {
     }//GEN-LAST:event_jMenuItem4ActionPerformed
 
     private void jMenuItem5ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItem5ActionPerformed
-        // Pedimos confirmación antes de cerrar todo el sistema
+        //Pedimos confirmacion antes de cerrar todo el sistema
         int respuesta = javax.swing.JOptionPane.showConfirmDialog(this, 
                 "¿Está seguro que desea salir del sistema?", 
                 "Confirmar Salida", 
@@ -137,7 +137,7 @@ public class frmHome extends javax.swing.JFrame {
                 javax.swing.JOptionPane.QUESTION_MESSAGE);
 
         if (respuesta == javax.swing.JOptionPane.YES_OPTION) {
-            // Cierra la aplicación por completo y libera la memoria
+            //Cierra la aplicacion
             System.exit(0);
         }
     }//GEN-LAST:event_jMenuItem5ActionPerformed

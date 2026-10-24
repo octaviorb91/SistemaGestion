@@ -17,10 +17,16 @@ public class frmVentas extends javax.swing.JFrame {
      */
     public frmVentas() {
         initComponents();
+        //Inicia centrado
         this.setLocationRelativeTo(null);
+        //Para que no cierre el sistema
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        //Fija la fecha en txtFecha
         txtFecha.setText(java.time.LocalDate.now().toString());
+        //Titulo
         this.setTitle("Sistema de gestión - Ventas");
+        //Cargamos el icono
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagenes/sellIcon.png")).getImage());
     }
 
     /**
@@ -167,27 +173,22 @@ public class frmVentas extends javax.swing.JFrame {
                             .addComponent(jLabel9)
                             .addComponent(jLabel8)
                             .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addGap(0, 0, Short.MAX_VALUE))
+                            .addComponent(jLabel7)))
                     .addGroup(jPanel2Layout.createSequentialGroup()
-                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addGap(150, 150, 150)
-                                .addComponent(btnBuscarArticulo))
-                            .addGroup(jPanel2Layout.createSequentialGroup()
-                                .addContainerGap()
-                                .addComponent(jLabel6)))
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(116, 116, 116)
-                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(txtCodigoArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnAgregar)
-                    .addComponent(txtNombreArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtPrecioArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtStockArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(150, 150, 150)
+                        .addComponent(btnBuscarArticulo))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jLabel6))
+                    .addGroup(jPanel2Layout.createSequentialGroup()
+                        .addGap(116, 116, 116)
+                        .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(txtCodigoArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 108, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(btnAgregar)
+                            .addComponent(txtNombreArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 128, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPrecioArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 99, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtStockArticulo, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 71, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
@@ -298,10 +299,8 @@ public class frmVentas extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                    .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
@@ -325,7 +324,7 @@ public class frmVentas extends javax.swing.JFrame {
 
         try {
             con = conexion.conectar();
-            // Buscamos al cliente por DNI y verificamos que esté activo
+            //Buscamos al cliente por DNI y verificamos que este activo
             String sql = "SELECT idCliente, nombre, apellido FROM clientes WHERE dni = ? AND activo = true";
             ps = con.prepareStatement(sql);
             ps.setString(1, dniABuscar);
@@ -333,13 +332,13 @@ public class frmVentas extends javax.swing.JFrame {
             rs = ps.executeQuery();
 
             if (rs.next()) {
-                // Si lo encuentra, guardamos el ID oculto y unimos nombre y apellido
+                //Si lo encuentra, guardamos el ID oculto y unimos nombre y apellido
                 txtIdCliente.setText(String.valueOf(rs.getInt("idCliente")));
 
                 String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellido");
                 txtNombreCliente.setText(nombreCompleto);
             } else {
-                // Si no existe o está inactivo
+                // Si no existe o esta inactivo
                 javax.swing.JOptionPane.showMessageDialog(this, "Cliente no encontrado o inactivo.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
                 txtIdCliente.setText("");
                 txtNombreCliente.setText("");
@@ -371,7 +370,7 @@ public class frmVentas extends javax.swing.JFrame {
 
         try {
             con = conexion.conectar();
-            // Buscamos por idArticulo y verificamos que esté activo
+            //Buscamos por idArticulo y verificamos que este activo
             String sql = "SELECT nombre, precio, stock FROM articulos WHERE idArticulo = ? AND activo = true";
             ps = con.prepareStatement(sql);
             ps.setInt(1, Integer.parseInt(codigoABuscar));
@@ -382,8 +381,8 @@ public class frmVentas extends javax.swing.JFrame {
                 txtNombreArticulo.setText(rs.getString("nombre"));
                 txtPrecioArticulo.setText(String.valueOf(rs.getDouble("precio")));
                 txtStockArticulo.setText(String.valueOf(rs.getInt("stock")));
-                txtCantidad.setText("1"); // Ponemos 1 por defecto
-                txtCantidad.requestFocus(); // Mandamos el cursor al campo cantidad
+                txtCantidad.setText("1"); //Ponemos 1 por defecto
+                txtCantidad.requestFocus(); //Mandamos el cursor al campo cantidad
             } else {
                 javax.swing.JOptionPane.showMessageDialog(this, "Artículo no encontrado o inactivo.", "Error", javax.swing.JOptionPane.ERROR_MESSAGE);
                 txtNombreArticulo.setText("");
@@ -440,7 +439,7 @@ public class frmVentas extends javax.swing.JFrame {
 
             javax.swing.table.DefaultTableModel modeloCarrito = (javax.swing.table.DefaultTableModel) tblCarrito.getModel();
 
-            // Si es la primera vez y tiene filas vacías por defecto de NetBeans, las limpiamos para que no molesten
+            //Si es la primera vez y tiene filas vacias por defecto de NetBeans, las limpiamos para que no molesten
             if (modeloCarrito.getRowCount() > 0 && modeloCarrito.getValueAt(0, 0) == null) {
                 modeloCarrito.setRowCount(0);
             }
@@ -452,12 +451,12 @@ public class frmVentas extends javax.swing.JFrame {
             fila[3] = precioUnitario;
             fila[4] = subtotal;
 
-            // ¡Magia aquí! insertRow(0, fila) agrega el producto SIEMPRE arriba de todo
+            //Agrega el producto arriba de todo
             modeloCarrito.insertRow(0, fila);
 
             actualizarTotalVenta();
 
-            // Limpiamos los campos del buscador
+            //Limpiamos los campos del buscador
             txtCodigoArticulo.setText("");
             txtNombreArticulo.setText("");
             txtPrecioArticulo.setText("");
@@ -470,7 +469,7 @@ public class frmVentas extends javax.swing.JFrame {
         }
     }
 
-    // Método auxiliar para sumar todos los subtotales de la tabla carrito
+    //Metodo para sumar todos los subtotales de la tabla carrito
     private void actualizarTotalVenta() {
         javax.swing.table.DefaultTableModel modeloCarrito = (javax.swing.table.DefaultTableModel) tblCarrito.getModel();
         double totalGeneral = 0.0;
@@ -478,13 +477,13 @@ public class frmVentas extends javax.swing.JFrame {
         for (int i = 0; i < modeloCarrito.getRowCount(); i++) {
             Object valorColumna = modeloCarrito.getValueAt(i, 4);
 
-            // Validamos estrictamente que la celda no sea nula ni esté vacía
+            //Validamos que la celda no sea nula ni este vacia
             if (valorColumna != null && !valorColumna.toString().trim().isEmpty()) {
                 try {
                     double subtotalFila = Double.parseDouble(valorColumna.toString());
                     totalGeneral += subtotalFila;
                 } catch (NumberFormatException e) {
-                    // Ignoramos si hay algún texto raro en la celda
+                    //Ignoramos si hay algun texto erroneo en la celda
                 }
             }
         }
@@ -493,7 +492,7 @@ public class frmVentas extends javax.swing.JFrame {
     }//GEN-LAST:event_btnAgregarActionPerformed
 
     private void btnConfirmarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfirmarActionPerformed
-        // 1. Validaciones previas
+        //Validaciones previas
         String idClienteTexto = txtIdCliente.getText().trim();
         if (idClienteTexto.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Debe buscar y seleccionar un cliente antes de confirmar la venta.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
@@ -516,14 +515,14 @@ public class frmVentas extends javax.swing.JFrame {
         try {
             con = conexion.conectar();
 
-            // ¡PASO CLAVE! Desactivamos el autocommit para iniciar la Transacción segura
+            //Desactivamos el autocommit para iniciar la transaccion segura
             con.setAutoCommit(false);
 
             int idCliente = Integer.parseInt(idClienteTexto);
             double totalVenta = Double.parseDouble(txtTotal.getText().trim().replace(",", "."));
 
-            // 2. Insertamos la Cabecera de la Venta (Tabla 'ventas')
-            // Usamos Statement.RETURN_GENERATED_KEYS para recuperar el idVenta que se acaba de crear automáticamente
+            //Insertamos la cabecera de la venta
+            //Usamos Statement.RETURN_GENERATED_KEYS para recuperar el idVenta que se acaba de crear
             String sqlVenta = "INSERT INTO ventas (idCliente, total) VALUES (?, ?)";
             psVenta = con.prepareStatement(sqlVenta, java.sql.Statement.RETURN_GENERATED_KEYS);
             psVenta.setInt(1, idCliente);
@@ -538,7 +537,7 @@ public class frmVentas extends javax.swing.JFrame {
                 throw new java.sql.SQLException("No se pudo obtener el ID de la venta generada.");
             }
 
-            // 3. Recorremos el carrito fila por fila para guardar el Detalle y descontar Stock
+            //Recorremos el carrito para guardar el detalle y descontar Stock
             String sqlDetalle = "INSERT INTO detalle_ventas (idVenta, idArticulo, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?)";
             String sqlStock = "UPDATE articulos SET stock = stock - ? WHERE idArticulo = ?";
 
@@ -551,7 +550,7 @@ public class frmVentas extends javax.swing.JFrame {
                 double precioUnitario = Double.parseDouble(modeloCarrito.getValueAt(i, 3).toString());
                 double subtotal = Double.parseDouble(modeloCarrito.getValueAt(i, 4).toString());
 
-                // A. Insertamos el renglón en detalle_ventas
+                //Insertamos el renglon en detalle_ventas
                 psDetalle.setInt(1, idVentaGenerado);
                 psDetalle.setInt(2, idArticulo);
                 psDetalle.setInt(3, cantidad);
@@ -559,27 +558,27 @@ public class frmVentas extends javax.swing.JFrame {
                 psDetalle.setDouble(5, subtotal);
                 psDetalle.executeUpdate();
 
-                // B. Descontamos el stock en la tabla articulos
+                //Descontamos el stock en la tabla articulos
                 psStock.setInt(1, cantidad);
                 psStock.setInt(2, idArticulo);
                 psStock.executeUpdate();
             }
 
-            // 4. Si todo salió bien, confirmamos la transacción de manera definitiva
+            //Confirmamos la transacción de manera definitiva
             con.commit();
 
             javax.swing.JOptionPane.showMessageDialog(this, "¡Venta registrada con éxito!\nTicket N°: " + idVentaGenerado, "Éxito", javax.swing.JOptionPane.INFORMATION_MESSAGE);
 
-            // 5. Limpiamos toda la pantalla para una nueva venta
+            //Limpiamos la pantalla
             txtIdCliente.setText("");
             txtDniBusqueda.setText("");
             txtNombreCliente.setText("");
-            modeloCarrito.setRowCount(0); // Vaciamos el carrito
+            modeloCarrito.setRowCount(0); //Vaciamos el carrito
             txtTotal.setText("0.00");
             txtDniBusqueda.requestFocus();
 
         } catch (Exception e) {
-            // Si ocurre CUALQUIER error, revertimos todos los cambios de la base de datos (Rollback)
+            //Si salta error, volvemos atras todos los cambios de la base de datos (Rollback)
             try {
                 if (con != null) {
                     con.rollback();
@@ -591,7 +590,7 @@ public class frmVentas extends javax.swing.JFrame {
 
             javax.swing.JOptionPane.showMessageDialog(this, "Error al procesar la venta. La operación fue cancelada.\n" + e.getMessage(), "Error Crítico", javax.swing.JOptionPane.ERROR_MESSAGE);
         } finally {
-            // Cerramos todos los recursos de base de datos
+            //Cerramos todos los recursos de base de datos
             try {
                 if (rsGenerado != null) rsGenerado.close();
                 if (psVenta != null) psVenta.close();

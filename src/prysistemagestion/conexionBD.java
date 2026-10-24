@@ -7,7 +7,7 @@ import javax.swing.JOptionPane;
 
 class conexionBD {
     
-        // Variables de conexión para XAMPP por defecto
+        //Variables de conexion para XAMPP
     private final String bd = "sistema_gestion";
     private final String url = "jdbc:mysql://localhost:3306/" + bd;
     private final String usuario = "root"; // Usuario por defecto en XAMPP
@@ -15,13 +15,13 @@ class conexionBD {
     
     private Connection con = null;
 
-    // Método para establecer la conexión
+    //Metodo para establecer la conexion
     public Connection conectar() {
         try {
-            // 1. Cargamos el driver
+            //Cargamos el driver
             Class.forName("com.mysql.cj.jdbc.Driver");
             
-            // 2. Establecemos la conexión
+            //Establecemos la conexión
             con = DriverManager.getConnection(url, usuario, password);
             System.out.println("¡Conexión exitosa a MySQL!");
             
@@ -34,7 +34,7 @@ class conexionBD {
         return con;
     }
 
-    // Método para desconectar
+    //Metodo para desconectar
     public void desconectar() {
         try {
             if (con != null && !con.isClosed()) {

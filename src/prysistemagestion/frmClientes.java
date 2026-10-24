@@ -17,11 +17,18 @@ public class frmClientes extends javax.swing.JFrame {
      */
     public frmClientes() {
         initComponents();
+        //Para que inicie centrado
         this.setLocationRelativeTo(null);
+        //Para que al cerrarlo, no cierre el sistema completo
         this.setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        //Cargamos la tabla
         cargarTabla();
+        //Deshabilitamos los campos para habilitarlos con el boton
         habilitarCampos(false);
+        //Le ponemos titulo
         this.setTitle("Sistema de gestión - Clientes");
+        //Cargamos el icono
+        this.setIconImage(new javax.swing.ImageIcon(getClass().getResource("/imagenes/clientIcon.png")).getImage());
     }
 
     /**
@@ -85,9 +92,11 @@ public class frmClientes extends javax.swing.JFrame {
         btnNuevo.addActionListener(this::btnNuevoActionPerformed);
 
         btnEliminar.setText("Eliminar");
+        btnEliminar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
         btnEliminar.addActionListener(this::btnEliminarActionPerformed);
 
         btnLimpiar.setText("Limpiar");
+        btnLimpiar.setHorizontalAlignment(javax.swing.SwingConstants.RIGHT);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -104,13 +113,14 @@ public class frmClientes extends javax.swing.JFrame {
                     .addComponent(jLabel6))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCorreo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addComponent(chkActivo, javax.swing.GroupLayout.PREFERRED_SIZE, 84, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtCodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtNombre, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtApellido, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtTelefono, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(txtDNI, javax.swing.GroupLayout.PREFERRED_SIZE, 97, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtCorreo, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 152, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(14, 14, 14))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(7, 7, 7)
@@ -232,7 +242,7 @@ public class frmClientes extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnGuardarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarActionPerformed
-        // 1. Capturamos los datos
+        //Capturamos los datos
         String nombre = txtNombre.getText().trim();
         String apellido = txtApellido.getText().trim();
         String dni = txtDNI.getText().trim();
@@ -240,13 +250,13 @@ public class frmClientes extends javax.swing.JFrame {
         String correo = txtCorreo.getText().trim();
         boolean activo = chkActivo.isSelected();
 
-        // 2. Validación: Nombre, Apellido y DNI no pueden estar vacíos
+        //Validacion: nombre, apellido y DNI no pueden estar vacios
         if (nombre.isEmpty() || apellido.isEmpty() || dni.isEmpty()) {
             javax.swing.JOptionPane.showMessageDialog(this, "Los campos Nombre, Apellido y DNI son obligatorios.", "Advertencia", javax.swing.JOptionPane.WARNING_MESSAGE);
             return;
         }
 
-        // 3. Preparación
+        //Preparacion
         conexionBD conexion = new conexionBD();
         java.sql.Connection con = null;
         java.sql.PreparedStatement ps = null;
@@ -256,7 +266,7 @@ public class frmClientes extends javax.swing.JFrame {
             String idTexto = txtCodigo.getText().trim();
 
             if (idTexto.isEmpty()) {
-                // ALTA
+                //Le damos el alta si no hay id
                 String sql = "INSERT INTO clientes (nombre, apellido, dni, telefono, correo, activo) VALUES (?, ?, ?, ?, ?, ?)";
                 ps = con.prepareStatement(sql);
                 ps.setString(1, nombre);
@@ -265,6 +275,7 @@ public class frmClientes extends javax.swing.JFrame {
                 ps.setString(4, telefono);
                 ps.setString(5, correo);
                 ps.setBoolean(6, activo);
+                //si hay id actualizamos
             } else {
                 String sql = "UPDATE clientes SET nombre=?, apellido=?, dni=?, telefono=?, correo=?, activo=? WHERE idCliente=?";
                 ps = con.prepareStatement(sql);
@@ -302,24 +313,24 @@ public class frmClientes extends javax.swing.JFrame {
         int filaSeleccionada = tblClientes.getSelectedRow();
 
         if (filaSeleccionada >= 0) {
-            // Extraemos las 7 columnas y las pasamos a los cuadros de texto
+            //Extraemos las columnas y las pasamos a los cuadros de texto
             txtCodigo.setText(tblClientes.getValueAt(filaSeleccionada, 0).toString());
             txtNombre.setText(tblClientes.getValueAt(filaSeleccionada, 1).toString());
             txtApellido.setText(tblClientes.getValueAt(filaSeleccionada, 2).toString());
             txtDNI.setText(tblClientes.getValueAt(filaSeleccionada, 3).toString());
 
-            // Manejo de nulos por si teléfono o correo están vacíos en la BD
+            //Manejo de nulos por si telefono o correo estan vacios en la BD
             Object telefono = tblClientes.getValueAt(filaSeleccionada, 4);
             txtTelefono.setText(telefono != null ? telefono.toString() : "");
 
             Object correo = tblClientes.getValueAt(filaSeleccionada, 5);
             txtCorreo.setText(correo != null ? correo.toString() : "");
 
-            // La columna 6 (Activo) la pasamos directo al CheckBox
+            //La columna 6 (activo) pasa directo al checkbox
             boolean estado = (boolean) tblClientes.getValueAt(filaSeleccionada, 6);
             chkActivo.setSelected(estado);
 
-            // Bloqueamos los campos para que no editen sin tocar "Modificar"
+            //Bloqueamos los campos para que no editen sin tocar el boton
             habilitarCampos(false);
         }
     }//GEN-LAST:event_tblClientesMouseClicked
@@ -327,7 +338,7 @@ public class frmClientes extends javax.swing.JFrame {
     private void btnNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoActionPerformed
         limpiarCampos();
         habilitarCampos(true);
-        txtNombre.requestFocus(); // Pone el cursor en el campo Nombre
+        txtNombre.requestFocus(); //Pone el cursor en el campo Nombre
     }//GEN-LAST:event_btnNuevoActionPerformed
 
     private void btnModificarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnModificarActionPerformed
@@ -362,7 +373,7 @@ public class frmClientes extends javax.swing.JFrame {
             try {
                 con = conexion.conectar();
 
-                // Borramos DONDE el idCliente coincida
+                //Borramos donde el idCliente coincida
                 String sql = "DELETE FROM clientes WHERE idCliente=?";
                 ps = con.prepareStatement(sql);
                 ps.setInt(1, Integer.parseInt(idTexto));
@@ -423,7 +434,7 @@ public class frmClientes extends javax.swing.JFrame {
     }
 
     private void habilitarCampos(boolean estado) {
-        // Habilita o deshabilita la escritura
+        //habilita o deshabilita la escritura
         txtNombre.setEnabled(estado);
         txtApellido.setEnabled(estado);
         txtDNI.setEnabled(estado);
@@ -436,7 +447,7 @@ public class frmClientes extends javax.swing.JFrame {
 
     private void cargarTabla() {
         javax.swing.table.DefaultTableModel modelo = (javax.swing.table.DefaultTableModel) tblClientes.getModel();
-        modelo.setRowCount(0); // Limpiamos visualmente la tabla antes de recargar
+        modelo.setRowCount(0); // Limpiamos la tabla antes de recargar
 
         conexionBD conexion = new conexionBD();
         java.sql.Connection con = null;
@@ -445,21 +456,21 @@ public class frmClientes extends javax.swing.JFrame {
 
         try {
             con = conexion.conectar();
-            // Traemos las 7 columnas de clientes
+            // Traemos las columnas de clientes
             String sql = "SELECT idCliente, nombre, apellido, dni, telefono, correo, activo FROM clientes";
 
             st = con.createStatement();
             rs = st.executeQuery(sql);
 
             while (rs.next()) {
-                Object[] fila = new Object[7]; // Son 7 columnas
+                Object[] fila = new Object[7]; //Son 7 columnas
                 fila[0] = rs.getInt("idCliente");
                 fila[1] = rs.getString("nombre");
                 fila[2] = rs.getString("apellido");
                 fila[3] = rs.getString("dni");
                 fila[4] = rs.getString("telefono");
                 fila[5] = rs.getString("correo");
-                // Directamente booleano para que dibuje el CheckBox en la tabla
+                //Directamente booleano para que dibuje el CheckBox en la tabla
                 fila[6] = rs.getBoolean("activo"); 
 
                 modelo.addRow(fila);
